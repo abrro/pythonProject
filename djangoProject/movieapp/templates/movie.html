@@ -21,6 +21,7 @@
             </blockquote>
         </div>
     </div>
+
     <div>
         {% if perms.movieapp.change_movie %}
             <a href="{% url 'movieapp:edit' movie.id %}">
@@ -28,5 +29,56 @@
             </a>
         {% endif %}
     </div>
+
+    <div>
+        {% if perms.movieapp.add_review %}
+            <a href="{% url 'movieapp:newreview' movie.id %}">
+                <button type="button" class="btn btn-primary">New review</button>
+            </a>
+        {% endif %}
+    </div>
+
+    <div class="container">
+        <div class="row">
+          <div class="col">
+            <div class="my-5">
+              <ul class="list-group list-group-flush">
+                  {% for review in reviews %}
+
+                <li class="list-group-item px-0">
+                  <a class="btn collapsed" data-toggle="collapse" href="#collapse{{ forloop.counter }}" role="button" aria-expanded="true" aria-controls="collapseExample1">
+                    {{ review.summary }} - {{ review.owner }} - {{ review.rating }}<span class="fa fa-star checked"></span><span class="mr-3"></span>
+                  </a>
+                  <div class="collapse" id="collapse{{ forloop.counter }}">
+                    <div class="card card-body mt-2">
+                        {{ review.body }}
+                    </div>
+                    <div>
+                    {% if perms.movieapp.change_review and perms.movieapp.delete_review %}
+                        {% if request.user.is_superuser or user.id is review.owner.id%}
+                        <a href="{% url 'movieapp:editreview' review.id %}">
+                            <button type="button" class="btn btn-primary">Edit review</button>
+                        </a>
+                        <form action="{% url 'movieapp:deletereview' review.id %}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" value="Delete review">
+                        </form>
+                        {% endif %}
+                    {% endif %}
+                    </div>
+                     </div>
+                </li>
+                  {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <style>
+    .checked {
+      color: orange;
+    }
+    </style>
 
 {% endblock %}

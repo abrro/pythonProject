@@ -1,0 +1,57 @@
+{% extends 'master.html' %}
+
+{% block title %}
+    Edit review
+{% endblock %}
+
+{% block content %}
+
+    <form method="post" action="{% url 'movieapp:editreview' id%}">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="col">
+                <label for="{{ form.summary.id_for_label }}">{{ form.summary.label_tag }}</label>
+                <input type="text" class="form-control" id="{{ form.summary.id_for_label }}" name="{{ form.summary.name }}" value="{{ form.summary.value }}">
+                {% if form.summary.errors %}
+                    <div class="alert alert-danger">
+                        <ul style="text-align: left">
+                            {% for error in form.summary.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-mid-2">
+                <label for="{{ form.rating.id_for_label }}">{{ form.rating.label_tag }}</label>
+                <input type="text" class="form-control" id="{{ form.rating.id_for_label }}" name="{{ form.rating.name }}" value="{{ form.rating.value }}">
+                {% if form.rating.errors %}
+                    <div class="alert alert-danger">
+                        <ul style="text-align: left">
+                            {% for error in form.rating.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.body.id_for_label }}">{{ form.body.label_tag }}</label>
+            <textarea type="text" class="form-control" id="{{ form.body.id_for_label }}" name="{{ form.body.name }}" rows="5">{{ form.body.value }}</textarea>
+            {% if form.body.errors %}
+                <div class="alert alert-danger">
+                    <ul style="text-align: left">
+                        {% for error in form.body.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+
+        <input type="submit" class="btn btn-primary btn-lg" value="Add"/>
+    </form>
+
+{% endblock %}

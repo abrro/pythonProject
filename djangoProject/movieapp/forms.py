@@ -12,4 +12,4 @@ class MovieForm(ModelForm):
 class ReviewForm(ModelForm):
     class Meta:
         model = Review
-        fields = ['summary', 'body']
+        fields = ['summary', 'body', 'rating']
